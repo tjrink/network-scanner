@@ -19,12 +19,20 @@ def send_info_to_scanner():
         
         #Call the port scanner function
         port_results = port_scanner.run(ip_add, min_port, max_port)
+        print(port_results)
         
         #Display the results
         if port_results:
             sorted_ports = sorted(list(port_results.keys()))
-            results_text = f"Scan Complete. Open ports ({len(sorted_ports)}): {', '.join(map(str, sorted_ports))}"
+            results_text = f"Scan Complete. Open ports ({len(sorted_ports)})"
             lbl_results.config(text=results_text, fg="green")
+
+            for port in sorted_ports:
+                port_descriptor = f"Port {port}: {port_results[port]}"
+                lbl_port = tk.Label(frm_results, text=port_descriptor)
+                lbl_port.pack()
+
+
         else:
             lbl_results.config(text="Scan Complete. No open ports found in range.", fg="red")
             
@@ -36,7 +44,7 @@ def send_info_to_scanner():
 
 #UI Setup
 root = tk.Tk()
-root.title("Advanced Network Scanner")
+root.title("Network Scanner")
 
 TITLE_FONT = tkfont.Font(family="Helvetica", size=14, weight="bold")
 LABEL_FONT = tkfont.Font(family="Helvetica", size=10)

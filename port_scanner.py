@@ -13,7 +13,8 @@ def run_port_scan(ip_add, min_port, max_port, results_queue):
             s.sendall(request.encode())
             response_bytes = s.recv(1024)
             response_decoded = response_bytes.decode("UTF-8")
-            results_queue[i] = response_decoded #"Returns" port to results queue if the connection works.
+            header_information = response_decoded.split("\r\n")
+            results_queue[i] = header_information[0] #"Returns" port to results queue if the connection works.
             s.close()
         except:
             pass #Does nothing if connection fails

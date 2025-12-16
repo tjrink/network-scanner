@@ -13,7 +13,7 @@ def run_port_scan(ip_add, min_port, max_port, results_queue):
             s.sendall(request.encode())
             response_bytes = s.recv(1024)
             response_decoded = response_bytes.decode("UTF-8")
-            results_queue.add(i) #"Returns" port to results queue if the connection works.
+            results_queue[i] = response_decoded #"Returns" port to results queue if the connection works.
             s.close()
         except:
             pass #Does nothing if connection fails
@@ -22,8 +22,8 @@ def run_port_scan(ip_add, min_port, max_port, results_queue):
 #Breaks up the request from the UI into 8 threads and kicks off each thread
 def run(ip_add, min_port, max_port):
     thread_size = ((max_port - min_port + 1)//8) + 1 #Set number of ports to scan in each thread
-    results_queue = set() #Initialize empty set to return list of open ports
-
+    #results_queue = set() #Initialize empty set to return list of open ports
+    results_queue = {}
     #Thread initialization
     thread_1 = threading.Thread(target=run_port_scan, args=(ip_add, min_port + (thread_size * 0), min_port + (thread_size * 1), results_queue))
     thread_2 = threading.Thread(target=run_port_scan, args=(ip_add, min_port + (thread_size * 1), min_port + (thread_size * 2), results_queue))

@@ -18,11 +18,11 @@ def send_info_to_scanner():
         max_port = int(max_str)
         
         #Call the port scanner function
-        port_set = port_scanner.run(ip_add, min_port, max_port)
+        port_results = port_scanner.run(ip_add, min_port, max_port)
         
         #Display the results
-        if port_set:
-            sorted_ports = sorted(list(port_set))
+        if port_results:
+            sorted_ports = sorted(list(port_results.keys()))
             results_text = f"Scan Complete. Open ports ({len(sorted_ports)}): {', '.join(map(str, sorted_ports))}"
             lbl_results.config(text=results_text, fg="green")
         else:
